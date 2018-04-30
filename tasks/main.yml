@@ -1,0 +1,28 @@
+---
+- name: Install Skiring
+  yum: name={{skiring_rpm_url}}
+
+# The Skiring RPM sets up the user and permissions, but it's possible that
+# post facto UID changes could affect this. It's critical that Skiring
+# permissions are correct, so we re-enforce them here.
+
+- name: Set permissions for Skiring binary
+  file:
+    state: file
+    path: /usr/bin/skiring
+    owner: skiring
+    mode: '4755'
+
+- name: Set permissions for Skiring configuration folder
+  file:
+    state: directory
+    path: /etc/skiring
+    owner: skiring
+    mode: '0700'
+
+- name: Set permissions for Skiring ring
+  file:
+    state: file
+    path: /etc/skiring/ring
+    owner: skiring
+    mode: '0600'
